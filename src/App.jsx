@@ -23,11 +23,12 @@ function App() {
   const [error, setError] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("/all_employees")
+  useEffect(async () => {
+    await axios
+      .get("/all_employee ")
       .then((res) => {
-        setFiles(res.data);
+        setFiles(res.data.data);
+        console.log(files);
       })
       .catch((err) => {
         setError(err.data);
@@ -36,17 +37,18 @@ function App() {
   const insertfiles = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("textFile", selectedFile);
     console.log(formData);
     console.log(selectedFile);
     try {
       const response = await axios({
         method: "post",
-        url: "/post_file",
+        url: "/post_employee",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setFiles(response.data);
+      setFiles(response.data.data);
+      console.log(files);
     } catch (error) {
       console.log(error);
     }
